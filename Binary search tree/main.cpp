@@ -63,6 +63,26 @@ int searching_BST(Tree* t, int key) {
 	else
 		return searching_BST(t->right, key);
 }
+void inserting_BST(Tree*& t, int key) {
+	static Tree* prev = nullptr;
+	if (t == nullptr) {
+		t = new Tree(key);
+		if (prev && prev->get_data() < key )
+			prev->set_left_right(nullptr, t);
+		else if(prev && prev->get_data() > key)
+			prev->set_left_right(t, nullptr);
+	}
+	if (t->get_data() == key)
+		return;
+	else if (key < t->get_data()) {
+		prev = t;
+		inserting_BST(t->left, key);
+	}
+	else {
+		prev = t;
+		inserting_BST(t->right, key);
+	}
+}
 int main() {
 	Tree* nl = new Tree(5);
 	Tree* nr = new Tree(10);
@@ -73,9 +93,8 @@ int main() {
 	Tree* nr_right = new Tree(13);
 	nl->set_left_right(nl_left, nl_right);
 	nr->set_left_right(nr_left, nr_right);
-
-	cout << searching_BST(n, 6) << endl;
-
+	inserting_BST(n, 9);
+	display_inorder(n);
 	delete n, nl, nr, nl_left, nr_left, nr_right, nl_right;
 
 	return 0;

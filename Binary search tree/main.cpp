@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 using namespace std;
 class Tree {
 	int data;
@@ -27,7 +28,6 @@ void display_preorder(Tree* n) {
 	display_preorder(n->left);
 	display_preorder(n->right);
 }
-
 void display_postorder(Tree* n) {
 	if (n == nullptr)
 		return;
@@ -42,7 +42,17 @@ void display_inorder(Tree* n) {
 	cout << n->get_data() << endl;
 	display_inorder(n->right);
 }
-
+int is_BST(Tree* n) {
+	static Tree* prev = nullptr;
+	if (n == nullptr)
+		return 1;
+	if(!is_BST(n->left)) 
+		return 0;
+	if (prev != nullptr && n->get_data() <= prev->get_data()) 
+		return 0;
+	prev = n;
+	return is_BST(n->right);
+}
 int main() {
 	Tree* nl = new Tree(5);
 	Tree* nr = new Tree(10);
@@ -54,7 +64,7 @@ int main() {
 	nl->set_left_right(nl_left, nl_right);
 	nr->set_left_right(nr_left, nr_right);
 
-	display_inorder(n);
+	cout << is_BST(n) << endl;
 
 	delete n, nl, nr, nl_left, nr_left, nr_right, nl_right;
 

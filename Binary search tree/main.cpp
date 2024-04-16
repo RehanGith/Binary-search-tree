@@ -53,6 +53,16 @@ int is_BST(Tree* n) {
 	prev = n;
 	return is_BST(n->right);
 }
+int searching_BST(Tree* t, int key) {
+	if (t == nullptr)
+		return 0;
+	if (key == t->get_data())
+		return 1;
+	else if (key < t->get_data())
+		return searching_BST(t->left, key);
+	else
+		return searching_BST(t->right, key);
+}
 int main() {
 	Tree* nl = new Tree(5);
 	Tree* nr = new Tree(10);
@@ -64,7 +74,7 @@ int main() {
 	nl->set_left_right(nl_left, nl_right);
 	nr->set_left_right(nr_left, nr_right);
 
-	cout << is_BST(n) << endl;
+	cout << searching_BST(n, 6) << endl;
 
 	delete n, nl, nr, nl_left, nr_left, nr_right, nl_right;
 

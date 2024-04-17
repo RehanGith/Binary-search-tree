@@ -92,7 +92,17 @@ int searching_BST(Tree* t, int key) {
 	else
 		return searching_BST(t->right, key);
 }
-
+int iterative_search(Tree* t, int key) {
+	while (t != nullptr) {
+		if (t->get_data() == key)
+			return 1;
+		else if (key < t->get_data())
+			t = t->left;
+		else
+			t = t->right;
+	}
+	return -1;
+}
 void inserting_BST(Tree*& t, int key) {
 	static Tree* prev = nullptr;
 	if (t == nullptr) {
@@ -117,7 +127,7 @@ int main() {
 	int arr[7]{ 9,5,11,2,7,4,12 };
 	Tree* n = nullptr;
 	create_BST(n, arr, 7);
-	display_inorder(n);
+	cout << iterative_search(n, 40);
 
 	return 0;
 }

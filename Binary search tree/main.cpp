@@ -42,6 +42,35 @@ void display_inorder(Tree* n) {
 	cout << n->get_data() << endl;
 	display_inorder(n->right);
 }
+void creating(Tree*& t, int key) {
+	static Tree* prev = nullptr;
+	if (t == nullptr) {
+		t = new Tree(key);
+		if (prev && prev->get_data() < key)
+			prev->right = t;
+		else if (prev && prev->get_data() > key)
+			prev->left = t;
+	}
+	else {
+		if (t->get_data() == key)
+			return;
+		else if (key < t->get_data()) {
+			prev = t;
+			creating(t->left, key);
+		}
+		else {
+			prev = t;
+			creating(t->right, key);
+		}
+	}
+}
+void create_BST(Tree*& n, int* arr, int size) {
+	Tree* t = n;
+	for (int i = 0; i < size; i++) {
+		creating(n, arr[i]);
+	}
+	cout << "Binary Search is Created" << endl;
+}
 int is_BST(Tree* n) {
 	static Tree* prev = nullptr;
 	if (n == nullptr)
@@ -63,6 +92,7 @@ int searching_BST(Tree* t, int key) {
 	else
 		return searching_BST(t->right, key);
 }
+
 void inserting_BST(Tree*& t, int key) {
 	static Tree* prev = nullptr;
 	if (t == nullptr) {
@@ -84,18 +114,10 @@ void inserting_BST(Tree*& t, int key) {
 	}
 }
 int main() {
-	Tree* nl = new Tree(5);
-	Tree* nr = new Tree(10);
-	Tree* n = new Tree(7, nl, nr);
-	Tree* nl_left = new Tree(3);
-	Tree* nl_right = new Tree(6);
-	Tree* nr_left = new Tree(8);
-	Tree* nr_right = new Tree(13);
-	nl->set_left_right(nl_left, nl_right);
-	nr->set_left_right(nr_left, nr_right);
-	inserting_BST(n, 9);
+	int arr[7]{ 9,5,11,2,7,4,12 };
+	Tree* n = nullptr;
+	create_BST(n, arr, 7);
 	display_inorder(n);
-	delete n, nl, nr, nl_left, nr_left, nr_right, nl_right;
 
 	return 0;
 }

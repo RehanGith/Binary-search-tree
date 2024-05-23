@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <queue>
 using namespace std;
 class Tree {
 	int data;
@@ -41,6 +42,22 @@ void display_inorder(Tree* n) {
 	display_inorder(n->left);
 	cout << n->get_data() << endl;
 	display_inorder(n->right);
+}
+void level_trevarsal(Tree* root ) {
+	if (root == nullptr)
+		return;
+	queue<Tree*> q1;
+	q1.push(root);
+	while (q1.empty() != true) {
+		Tree* node = q1.front();
+		cout << node->get_data() << " ";
+		if (node->left != nullptr)
+			q1.push(node->left);
+		if (node->right != nullptr)
+			q1.push(node->right);
+		q1.pop();
+	}
+
 }
 void creating(Tree*& t, int key) {
 	static Tree* prev = nullptr;
@@ -127,7 +144,7 @@ int main() {
 	int arr[7]{ 9,5,11,2,7,4,12 };
 	Tree* n = nullptr;
 	create_BST(n, arr, 7);
-	cout << iterative_search(n, 40);
+	level_trevarsal(n);
 
 	return 0;
 }

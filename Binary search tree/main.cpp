@@ -102,11 +102,13 @@ int is_BST(Tree* n) {
 	prev = n;
 	return is_BST(n->right);
 }
-int searching_BST(Tree* t, int key) {
-	if (t == nullptr)
-		return 0;
+Tree* searching_BST(Tree* t, int key) {
+	if (t == nullptr) {
+		cout << "key is not found" << endl;
+		return nullptr;
+	}
 	if (key == t->get_data())
-		return 1;
+		return t;
 	else if (key < t->get_data())
 		return searching_BST(t->left, key);
 	else

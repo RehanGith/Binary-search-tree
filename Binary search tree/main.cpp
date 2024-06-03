@@ -9,15 +9,18 @@ public:
 	Tree* right;
 	Tree(int d = 0, Tree* l = nullptr, Tree* r = nullptr) : data(d), left(l), right(r) {
 	}
-	void set_data();
+	void set_data(int d = 0);
 	int get_data() const;
 	void set_left_right(Tree* l, Tree* r) {
 		left = l; right = r;
 	}
 };
-void Tree::set_data() {
-	cout << "Enter data: ";
-	cin >> data;
+void Tree::set_data(int d) {
+	if (d == 0) {
+		cout << "Enter data: ";
+		cin >> data;
+	}
+	data = d;
 }
 int Tree::get_data() const {
 	return data;
@@ -140,11 +143,44 @@ void inserting_BST(Tree*& t, int key) {
 		inserting_BST(t->right, key);
 	}
 }
+Tree* inorder_suc(Tree* cur) {
+	while (cur && cur->left != nullptr) {
+		cur = cur->left;
+	}
+	return cur;
+}
+Tree* delete_node(Tree* root, int key) {
+	if (root == nullptr) {
+		cout << "Key not Found" << endl;
+		return nullptr;
+	}
+	else if (root->get_data() < key)
+		root->right = delete_node(root->right, key);
+	else if (root->get_data() > key)
+		root->left = delete_node(root->left, key);
+	else {
+		if (root->right == nullptr) {
+			Tree* temp = root->left;
+			delete root;
+			return temp;
+		}
+		else if (root->left == nullptr) {
+			Tree* temp = root->right;
+			delete root;
+			return temp;
+		}
+		Tree* temp = inorder_suc(root->right);
+		root->set_data(temp->get_data());
+		root->right = delete_node(root->right, temp->get_data());
+	}
+	return root;
+}
 int main() {
 	int arr[7]{ 9,5,11,2,7,4,12 };
-	Tree* n = nullptr;
-	create_BST(n, arr, 7);
-	level_trevarsal(n);
+	Tree* root = nullptr;
+	create_BST(root, arr, 7);
+	root = delete_node(root, 15);
+	display_preorder(root);
 
 	return 0;
 }

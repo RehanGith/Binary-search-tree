@@ -60,7 +60,13 @@ void level_trevarsal(Tree* root ) {
 			q1.push(node->right);
 		q1.pop();
 	}
-
+}
+int height(Tree* t) {
+	if (t == nullptr)
+		return 0;
+	int left_height = height(t->left);
+	int right_height = height(t->right);
+	return max(left_height, right_height) + 1;
 }
 void creating(Tree*& t, int key) {
 	static Tree* prev = nullptr;
@@ -153,6 +159,7 @@ Tree* insert(Tree* root, int key) {
 		root->left = insert(root->left, key);
 	return root;
 }
+
 Tree* inorder_suc(Tree* cur) {
 	while (cur && cur->left != nullptr) {
 		cur = cur->left;
@@ -189,8 +196,7 @@ int main() {
 	int arr[7]{ 9,5,11,2,7,4,12 };
 	Tree* root = nullptr;
 	create_BST(root, arr, 7);
-	root = insert(root, 10);
-	display_inorder(root);
+	cout << height(root) << endl;
 
 	return 0;
 }

@@ -112,6 +112,16 @@ int searching_BST(Tree* t, int key) {
 	else
 		return searching_BST(t->right, key);
 }
+
+int find_max(Tree* t) {
+	if (t == nullptr) {
+		cout << "Tree is Empty" << endl;
+		return -1;
+	}
+	if (t->right == nullptr)
+		return t->get_data();
+	return find_max(t->right);
+}
 int iterative_search(Tree* t, int key) {
 	while (t != nullptr) {
 		if (t->get_data() == key)
@@ -178,9 +188,10 @@ Tree* delete_node(Tree* root, int key) {
 int main() {
 	int arr[7]{ 9,5,11,2,7,4,12 };
 	Tree* root = nullptr;
+	cout << find_max(root);
 	create_BST(root, arr, 7);
-	root = delete_node(root, 15);
-	display_preorder(root);
+	cout << find_max(root);
+	
 
 	return 0;
 }

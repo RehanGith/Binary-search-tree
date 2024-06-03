@@ -131,7 +131,7 @@ int find_min(Tree* t) {
 	}
 	if (t->left == nullptr)
 		return t->get_data();
-	return find_min(t->left);
+	find_min(t->left);
 }
 int iterative_search(Tree* t, int key) {
 	while (t != nullptr) {
@@ -144,25 +144,14 @@ int iterative_search(Tree* t, int key) {
 	}
 	return -1;
 }
-void inserting_BST(Tree*& t, int key) {
-	static Tree* prev = nullptr;
-	if (t == nullptr) {
-		t = new Tree(key);
-		if (prev && prev->get_data() < key )
-			prev->set_left_right(nullptr, t);
-		else if(prev && prev->get_data() > key)
-			prev->set_left_right(t, nullptr);
-	}
-	if (t->get_data() == key)
-		return;
-	else if (key < t->get_data()) {
-		prev = t;
-		inserting_BST(t->left, key);
-	}
-	else {
-		prev = t;
-		inserting_BST(t->right, key);
-	}
+Tree* insert(Tree* root, int key) {
+	if (root == nullptr)
+		return new Tree(key);
+	else if (root->get_data() < key)
+		root->right = insert(root->right, key);
+	else if (root->get_data() > key)
+		root->left = insert(root->left, key);
+	return root;
 }
 Tree* inorder_suc(Tree* cur) {
 	while (cur && cur->left != nullptr) {
@@ -199,10 +188,9 @@ Tree* delete_node(Tree* root, int key) {
 int main() {
 	int arr[7]{ 9,5,11,2,7,4,12 };
 	Tree* root = nullptr;
-	cout << find_max(root);
 	create_BST(root, arr, 7);
-	cout << find_max(root);
-	
+	root = insert(root, 10);
+	display_inorder(root);
 
 	return 0;
 }

@@ -122,6 +122,15 @@ int find_max(Tree* t) {
 		return t->get_data();
 	return find_max(t->right);
 }
+int find_min(Tree* t) {
+	if (t == nullptr) {
+		cout << "Tree is Empty" << endl;
+		return -1;
+	}
+	if (t->left == nullptr)
+		return t->get_data();
+	return find_min(t->left);
+}
 int iterative_search(Tree* t, int key) {
 	while (t != nullptr) {
 		if (t->get_data() == key)

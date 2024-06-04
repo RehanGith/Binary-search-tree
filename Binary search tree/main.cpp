@@ -51,16 +51,24 @@ void level_trevarsal(Tree* root ) {
 		return;
 	queue<Tree*> q1;
 	q1.push(root);
+	q1.push(nullptr);
 	while (q1.empty() != true) {
 		Tree* node = q1.front();
-		cout << node->get_data() << " ";
-		if (node->left != nullptr)
-			q1.push(node->left);
-		if (node->right != nullptr)
-			q1.push(node->right);
 		q1.pop();
+		if (node != nullptr) {
+			cout << node->get_data() << " ";
+			if (node->left != nullptr)
+				q1.push(node->left);
+			if (node->right != nullptr)
+				q1.push(node->right);
+		}
+		else if (!q1.empty()) {
+			q1.push(nullptr);
+		}
+		
 	}
 }
+
 int height(Tree* t) {
 	if (t == nullptr)
 		return 0;

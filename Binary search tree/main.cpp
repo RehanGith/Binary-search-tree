@@ -212,9 +212,9 @@ Tree* deleteWithnoChild(Tree* root, int key) {
 		return nullptr;
 	}
 	else if (root->get_data() < key)
-		root->right = delete_node(root->right, key);
+		root->right = deleteWithnoChild(root->right, key);
 	else if (root->get_data() > key)
-		root->left = delete_node(root->left, key);
+		root->left = deleteWithnoChild(root->left, key);
 	else {
 		delete root;
 		return nullptr;
@@ -227,9 +227,9 @@ Tree* deleteWithoneChild(Tree* root, int key) {
 		return nullptr;
 	}
 	else if (root->get_data() < key)
-		root->right = delete_node(root->right, key);
+		root->right = deleteWithoneChild(root->right, key);
 	else if (root->get_data() > key)
-		root->left = delete_node(root->left, key);
+		root->left = deleteWithoneChild(root->left, key);
 	else {
 		if (root->right == nullptr) {
 			Tree* temp = root->left;
@@ -245,27 +245,12 @@ Tree* deleteWithoneChild(Tree* root, int key) {
 	}
 	return root;
 }
-Tree* deleteWithBothChild(Tree* root, int key) {
-	if (root == nullptr) {
-		cout << "Key not Found" << endl;
-		return nullptr;
-	}
-	else if (root->get_data() < key)
-		root->right = delete_node(root->right, key);
-	else if (root->get_data() > key)
-		root->left = delete_node(root->left, key);
-	else {
-		Tree* temp = inorder_suc(root->right);
-		root->set_data(temp->get_data());
-		root->right = delete_node(root->right, temp->get_data());
-	}
-	return root;
-}
+
 int main() {
 	int arr[6]{ 7,5,4,6, 8, 9 };
 	Tree* root = nullptr;
 	int preindex = 0;
 	root = createBSTpreorder(arr, &preindex, arr[0], INT_MAX, INT_MIN, 6);
-    display_preorder(root);
+    
 	return 0;
 }

@@ -192,11 +192,80 @@ Tree* delete_node(Tree* root, int key) {
 	}
 	return root;
 }
-int main() {
-	int arr[7]{ 9,5,11,2,7,4,12 };
+Tree* createBSTpreorder(int preorder[], int* pre_index, int key, int max, int min, int n) {
 	Tree* root = nullptr;
-	create_BST(root, arr, 7);
-	cout << height(root) << endl;
-
+	if (*pre_index >= n)
+		return root;
+	if (key > min && key < max) {
+		root = new Tree(key);
+		*pre_index = *pre_index + 1;
+		if (*pre_index < n)
+			root->left = createBSTpreorder(preorder, pre_index, preorder[*pre_index], key, min, n);
+		if (*pre_index < n)
+			root->right = createBSTpreorder(preorder, pre_index, preorder[*pre_index], max,key, n);
+	}
+	return root;
+}
+Tree* deleteWithnoChild(Tree* root, int key) {
+	if (root == nullptr) {
+		cout << "Key not Found" << endl;
+		return nullptr;
+	}
+	else if (root->get_data() < key)
+		root->right = delete_node(root->right, key);
+	else if (root->get_data() > key)
+		root->left = delete_node(root->left, key);
+	else {
+		delete root;
+		return nullptr;
+	}
+	return root;
+}
+Tree* deleteWithoneChild(Tree* root, int key) {
+	if (root == nullptr) {
+		cout << "Key not Found" << endl;
+		return nullptr;
+	}
+	else if (root->get_data() < key)
+		root->right = delete_node(root->right, key);
+	else if (root->get_data() > key)
+		root->left = delete_node(root->left, key);
+	else {
+		if (root->right == nullptr) {
+			Tree* temp = root->left;
+			delete root;
+			return temp;
+		}
+		else {
+			Tree* temp = root->right;
+			delete root;
+			return temp;
+		}
+		
+	}
+	return root;
+}
+Tree* deleteWithBothChild(Tree* root, int key) {
+	if (root == nullptr) {
+		cout << "Key not Found" << endl;
+		return nullptr;
+	}
+	else if (root->get_data() < key)
+		root->right = delete_node(root->right, key);
+	else if (root->get_data() > key)
+		root->left = delete_node(root->left, key);
+	else {
+		Tree* temp = inorder_suc(root->right);
+		root->set_data(temp->get_data());
+		root->right = delete_node(root->right, temp->get_data());
+	}
+	return root;
+}
+int main() {
+	int arr[6]{ 7,5,4,6, 8, 9 };
+	Tree* root = nullptr;
+	int preindex = 0;
+	root = createBSTpreorder(arr, &preindex, arr[0], INT_MAX, INT_MIN, 6);
+    display_preorder(root);
 	return 0;
 }

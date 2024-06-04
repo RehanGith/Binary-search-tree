@@ -68,7 +68,33 @@ void level_trevarsal(Tree* root ) {
 		
 	}
 }
+int sumAtLevel(Tree* root, int k) {
+	if (root == nullptr) {
+		cout << "Tree is empty" << endl;
+	}
+	queue<Tree*> q1;
+	q1.push(root);
+	q1.push(nullptr);
+	int level{}, sum{};
+	while (q1.empty() != true) {
+		Tree* node = q1.front();
+		q1.pop();
+		if (node != nullptr) {
+			if (level == k)
+				sum += node->get_data();
+			if (node->left != nullptr)
+				q1.push(node->left);
+			if (node->right != nullptr)
+				q1.push(node->right);
+		}
+		else if (!q1.empty()) {
+			q1.push(nullptr);
+			level++;
+		}
 
+	}
+	return sum;
+}
 int height(Tree* t) {
 	if (t == nullptr)
 		return 0;
@@ -259,6 +285,6 @@ int main() {
 	Tree* root = nullptr;
 	int preindex = 0;
 	root = createBSTpreorder(arr, &preindex, arr[0], INT_MAX, INT_MIN, 6);
-    
+	cout << sumAtLevel(root, 2);
 	return 0;
 }
